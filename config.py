@@ -1,10 +1,13 @@
 import os
 
-SECRET_KEY = 'secret-key'
-
-SQLALCHEMY_DATABASE_URI = 'sqlite:///project.db'
-#SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://user:password@std-mysql.ist.mospolytech.ru/db_name'
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_ECHO = True
-
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'media', 'images')
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-key-for-local')
+    
+    if os.environ.get('DATABASE_URL'):
+        # Для Render - используем PostgreSQL
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace('postgres://', 'postgresql://')
+    else:
+        # Для локальной разработки - MySQL
+        SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:password@localhost/lab6'
+    
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
