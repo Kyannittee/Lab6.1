@@ -7,7 +7,10 @@ from courses import bp as courses_bp
 
 app = Flask(__name__)
 application = app
-
+# Создаём папку для временных файлов (нужно для загрузки изображений на Render)
+import os
+os.makedirs('tmp', exist_ok=True)
+os.environ['TMPDIR'] = os.path.abspath('tmp')
 app.config.from_pyfile('config.py')
 
 db.init_app(app)
